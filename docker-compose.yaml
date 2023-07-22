@@ -1,0 +1,11 @@
+version: '3.9'
+
+services:
+  websvc:
+    build:
+      target: ${TARGET:-dev}
+    image: websvc:${TAG:-latest}
+    environment:
+      - WEBSVC_PROFILING=1
+      - WEBSVC_LOG_LEVEL=info
+
