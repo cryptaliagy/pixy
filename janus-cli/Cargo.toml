@@ -11,11 +11,10 @@ description = "A template project to bootstrap new CLIs in rust"
 chrono = { version = "0.4.23", default-features = false, features = ["std", "clock"] }
 clap = { version = "4.1.8", default-features = false, features = ["derive", "error-context", "help", "std", "suggestions", "usage"] }
 fern = { version = "0.6.1" }
-jsonschema = { version = "0.17.1", default-features = false, features = ["resolve-file"] }
 serde = { version = "1.0.174", features = ["derive"] }
 serde_json = "1.0.103"
 serde_yaml = "0.9.25"
-janus-common = { path = "../janus-common" }
+janus-common = { path = "../janus-common", features = ["validation"] }
 janus = { path = "../janus" }
 tokio = { version = "1.29.1", features = ["rt", "net", "rt-multi-thread", "macros"] }
 tracing = { version = "0.1.37", features = ["async-await"] }
@@ -29,7 +28,7 @@ clap_mangen = "0.2.9"
 default = ["env", "colors", "wrap_help"]
 env = ["clap/env"]
 wrap_help = ["clap/wrap_help"]
-colors = ["fern/colored", "clap/color"]
+colors = ["clap/color"]
 
 [[bin]]
 name = "janus"

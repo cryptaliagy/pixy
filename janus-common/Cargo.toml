@@ -6,4 +6,13 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+jsonschema = { version = "0.17.1", optional = true, default-features = false, features = ["resolve-file"] }
 serde = { version = "1.0.174", features = ["derive"] }
+serde_json = { version = "1.0.103", optional = true }
+serde_yaml = { version = "0.9.25", optional = true }
+tracing = "0.1.37"
+
+[features]
+default = []
+
+validation = ["jsonschema", "serde_json", "serde_yaml"]
