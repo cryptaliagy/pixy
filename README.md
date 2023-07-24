@@ -1,8 +1,8 @@
 # Rust Web Service
 
-[![release](https://github.com/taliamax/websvc-rs/actions/workflows/release.yml/badge.svg)](https://github.com/taliamax/websvc-rs/actions/workflows/release.yml)
-[![tests](https://github.com/taliamax/websvc-rs/actions/workflows/tests.yml/badge.svg)](https://github.com/taliamax/websvc-rs/actions/workflows/tests.yml)
-[![nightly-scan](https://github.com/taliamax/websvc-rs/actions/workflows/nightly-scan.yml/badge.svg)](https://github.com/taliamax/websvc-rs/actions/workflows/nightly-scan.yml)
+[![release](https://github.com/cryptaliagy/websvc-rs/actions/workflows/release.yml/badge.svg)](https://github.com/cryptaliagy/websvc-rs/actions/workflows/release.yml)
+[![tests](https://github.com/cryptaliagy/websvc-rs/actions/workflows/tests.yml/badge.svg)](https://github.com/cryptaliagy/websvc-rs/actions/workflows/tests.yml)
+[![nightly-scan](https://github.com/cryptaliagy/websvc-rs/actions/workflows/nightly-scan.yml/badge.svg)](https://github.com/cryptaliagy/websvc-rs/actions/workflows/nightly-scan.yml)
 
 This is a template repository meant to be used as a starting point for developing a new Rust-based microservice. This handles most of the key bootstrapping elements that I require when creating a new service.
 

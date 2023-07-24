@@ -1,0 +1,13 @@
+targets:
+  - name: "echo server"
+    enabled: true
+    webhook:
+      url: "http://localhost:8080/echo"
+      timeout: 10
+      retries: 3
+  - name: "echo server 2"
+    enabled: true
+    webhook:
+      url: "http://localhost:8080/data"
+      timeout: 10
+      retries: 3

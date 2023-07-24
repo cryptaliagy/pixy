@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Enviro Gateway Configuration",
+  "description": "A configuration schema for the Enviro Gateway to define targets and other settings",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "targets": {
+      "type": "array",
+      "description": "The targets to send data to",
+      "items": {
+        "$ref": "#/$defs/outputTarget"
+      }
+    }
+  },
+  "$defs": {
+    "outputTarget": {
+      "type": "object",
+      "description": "A target to send data to",
+      "required": ["name"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "The name of the target",
+          "examples": ["InfluxDB", "Webhook"]
+        },
+        "enabled": {
+          "type": "boolean",
+          "description": "Whether the target is enabled",
+          "default": true,
+          "examples": [true, false]
+        },
+        "webhook": {
+          "$ref": "#/$defs/webhook"
+        }
+      },
+      "oneOf": [{ "required": ["webhook"] }]
+    },
+    "webhook": {
+      "type": "object",
+      "required": ["url"],
+      "properties": {
+        "url": {
+          "type": "string",
+          "description": "The URL to send the webhook to",
+          "format": "uri",
+          "examples": [
+            "https://example.com/webhook",
+            "http://example.com/webhook",
+            "http://example.com:8000/webhook",
+            "http://example.com:8080/webhook/path",
+            "https://example.com/webhook?query=string"
+          ],
+          "pattern": "^(https?)://[^\\s]*$"
+        },
+        "timeout": {
+          "type": "integer",
+          "description": "The timeout in seconds to wait for a response from the webhook",
+          "default": 10,
+          "minimum": 1,
+          "maximum": 60,
+          "examples": [10, 30, 60]
+        },
+        "retries": {
+          "type": "integer",
+          "description": "The number of times to retry sending the webhook if it fails",
+          "default": 3,
+          "minimum": 0,
+          "maximum": 10,
+          "examples": [0, 1, 3, 5, 10]
+        }
+      }
+    }
+  }
+}
