@@ -1,4 +1,4 @@
-use crate::{clients, SensorHandler, SensorReading};
+use crate::{clients, SensorHandler, SensorMessage};
 
 use std::sync::Arc;
 use std::time::Duration;
@@ -25,7 +25,7 @@ impl WebhookHandler {
             panic!("Invalid target properties for WebhookHandler");
         };
 
-        let retries: u32 = (&properties.retries).into();
+        let retries: u32 = properties.retries as u32;
 
         let retry_policy = ExponentialBackoff::builder().build_with_max_retries(retries);
 
@@ -53,13 +53,13 @@ impl From<Target> for WebhookHandler {
 #[async_trait]
 impl SensorHandler for WebhookHandler {
     #[instrument]
-    async fn handle_reading(&self, reading: Arc<SensorReading>) -> Result<(), String> {
+    async fn handle_reading(&self, reading: Arc<SensorMessage>) -> Result<(), String> {
         tracing::info!("Sending reading data to {}", &self.config.url);
         let response = self
             .client
             .post(&self.config.url)
-            .timeout(Duration::from(&self.config.timeout))
-            .body(reading.get_raw_reading().to_string())
+            .timeout(Duration::from_secs(self.config.timeout as u64))
+            .json(reading.as_ref())
             .send()
             .await;
 

@@ -6,27 +6,61 @@ use std::sync::Arc;
 use janus_common::{ConfigFile, TargetProperties};
 
 use async_trait::async_trait;
+use serde::{Deserialize, Serialize};
 use tracing::{debug, instrument};
 
-#[derive(Debug)]
-pub struct SensorReading {
-    raw_reading: String,
+/// A model describing the payload of the Enviro Pico board.
+#[derive(Debug, Serialize, Deserialize)]
+pub struct SensorMessage {
+    /// The readings from the sensor.
+    readings: Readings,
+
+    /// The nickname of the specific controller board.
+    nickname: String,
+
+    /// The timestamp of the reading.
+    timestamp: String,
+
+    /// The model of the controller board.
+    model: String,
+
+    /// The unique identifier of the controller board.
+    uid: String,
 }
 
-impl SensorReading {
-    pub fn new(raw_reading: String) -> Self {
-        Self { raw_reading }
-    }
+#[derive(Debug, Serialize, Deserialize)]
+pub struct Readings {
+    // Sensors in every board
+    /// The temperature in degrees Celsius.
+    temperature: f32,
 
-    pub fn get_raw_reading(&self) -> &str {
-        &self.raw_reading
-    }
+    /// The pressure in hPa.
+    pressure: f32,
+
+    /// The humidity in percentage.
+    humidity: f32,
+
+    /// The color temperature in Kelvin.
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    color_temperature: Option<usize>,
+
+    /// The gas resistance in Ohms.
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    gas_resistance: Option<usize>,
+
+    /// The IAQ (Indoor Air Quality) score.
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    aqi: Option<f32>,
+
+    /// The luminance in lux.
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    luminance: Option<usize>,
 }
 
 #[async_trait]
 pub trait SensorHandler: Send + Sync + std::fmt::Debug {
     /// Publishes the given reading to the target.
-    async fn handle_reading(&self, reading: Arc<SensorReading>) -> Result<(), String>;
+    async fn handle_reading(&self, reading: Arc<SensorMessage>) -> Result<(), String>;
 
     /// Returns the name of the handler.
     fn get_name(&self) -> &str;
@@ -36,8 +70,8 @@ pub trait SensorHandler: Send + Sync + std::fmt::Debug {
 }
 
 #[async_trait]
-pub trait Gateway {
-    async fn handle_reading(&self, reading: Arc<SensorReading>);
+pub trait Gateway: Send + Sync {
+    async fn handle_reading(&self, reading: Arc<SensorMessage>);
 }
 
 #[derive(Debug, Clone)]
@@ -72,7 +106,7 @@ impl From<ConfigFile> for SensorGateway {
 #[async_trait]
 impl Gateway for SensorGateway {
     #[instrument]
-    async fn handle_reading(&self, reading: Arc<SensorReading>) {
+    async fn handle_reading(&self, reading: Arc<SensorMessage>) {
         debug!("Handling reading: {:?}", &reading);
 
         let mut join_handles = Vec::new();

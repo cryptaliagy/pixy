@@ -17,7 +17,7 @@
 pub mod cli;
 pub mod logging;
 
-use janus::{Gateway, SensorGateway, SensorReading};
+use janus::{Gateway, SensorGateway, SensorMessage};
 use janus_common::parse_configs;
 use std::sync::Arc;
 use tracing::debug;
@@ -74,7 +74,8 @@ async fn run_emit(args: cli::EmitArgs) -> Result<(), String> {
         data
     };
 
-    let reading = SensorReading::new(data);
+    let reading: SensorMessage =
+        serde_json::from_str(&data).map_err(|e| format!("Error parsing sensor data: {}", e))?;
 
     gateway.handle_reading(Arc::new(reading)).await;
 
