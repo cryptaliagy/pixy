@@ -70,7 +70,7 @@ pub trait SensorHandler: Send + Sync + std::fmt::Debug {
 }
 
 #[async_trait]
-pub trait Gateway: Send + Sync {
+pub trait Gateway: Send + Sync + std::fmt::Debug {
     async fn handle_reading(&self, reading: Arc<SensorMessage>);
 }
 

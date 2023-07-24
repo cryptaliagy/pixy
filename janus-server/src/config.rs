@@ -2,7 +2,6 @@ use config::{Config, ConfigError, Environment};
 use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Debug)]
-#[serde(rename_all = "camelCase")]
 pub struct ServerConfiguration {
     pub port: u16,
     pub log_level: String,
