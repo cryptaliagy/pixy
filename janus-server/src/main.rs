@@ -5,7 +5,7 @@ use std::sync::Arc;
 use axum::{
     extract::{Json, State},
     http::StatusCode,
-    routing::post,
+    routing::{get, post},
 };
 use tracing::{debug, info, instrument, Level};
 use tracing_subscriber::fmt;
@@ -35,6 +35,7 @@ async fn main() {
 
     let app = axum::Router::new()
         .route("/data", post(handler))
+        .route("/healthz", get(|| async { StatusCode::OK }))
         .with_state(gateway);
 
     let bind_address = format!("0.0.0.0:{}", server_configs.port);
