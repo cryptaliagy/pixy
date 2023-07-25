@@ -1,0 +1,4 @@
+targets:
+  - name: "Janus server"
+    webhook:
+      url: "http://localhost:8080/data"

@@ -1,0 +1,4 @@
+targets:
+  - name: "Janus echo server"
+    webhook:
+      url: "http://localhost:8080/echo"

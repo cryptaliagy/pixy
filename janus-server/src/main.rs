@@ -36,6 +36,7 @@ async fn main() {
     let app = axum::Router::new()
         .route("/data", post(handler))
         .route("/healthz", get(|| async { StatusCode::OK }))
+        .route("/echo", post(echo))
         .with_state(gateway);
 
     let bind_address = format!("0.0.0.0:{}", server_configs.port);
@@ -62,4 +63,10 @@ async fn handler(
     });
 
     StatusCode::ACCEPTED
+}
+
+#[instrument]
+async fn echo(Json(data): Json<SensorMessage>) -> Json<SensorMessage> {
+    info!("Received data: {:?}", &data);
+    Json(data)
 }

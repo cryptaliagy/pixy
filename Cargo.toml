@@ -1,5 +1,5 @@
 [workspace]
-members = ["janus", "janus-cli", "janus-common", "janus-server"]
+members = ["janus", "janus-cli", "janus-common", "janus-server", "healthcheck"]
 
 
 [profile.release]

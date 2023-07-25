@@ -1,0 +1,16 @@
+{
+  "readings": {
+    "pressure": 1004.76,
+    "temperature": 28.07,
+    "voltage": 0,
+    "color_temperature": 7771,
+    "gas_resistance": 74505,
+    "aqi": 12.3,
+    "humidity": 27.29,
+    "luminance": 268
+  },
+  "nickname": "office",
+  "model": "indoor",
+  "uid": "e6614864d3898034",
+  "timestamp": "2023-07-25T14:30:13Z"
+}

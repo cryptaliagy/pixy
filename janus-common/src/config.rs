@@ -10,6 +10,7 @@ pub struct ConfigFile {
 #[serde(rename_all = "camelCase")]
 pub struct Target {
     pub name: String,
+    #[serde(default = "_default_true")]
     pub enabled: bool,
     #[serde(flatten)]
     pub properties: TargetProperties,
@@ -44,4 +45,8 @@ fn _default_retries() -> u8 {
 
 fn _default_timeout() -> u8 {
     10
+}
+
+fn _default_true() -> bool {
+    true
 }
