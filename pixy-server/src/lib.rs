@@ -81,7 +81,7 @@ async fn handler(
 }
 
 #[instrument]
-async fn echo(Json(data): Json<SensorMessage>) -> Json<SensorMessage> {
+async fn echo(data: String) -> String {
     info!("Received data: {:?}", &data);
-    Json(data)
+    data
 }
