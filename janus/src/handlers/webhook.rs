@@ -1,6 +1,5 @@
 use crate::{clients, SensorHandler, SensorMessage};
 
-use std::sync::Arc;
 use std::time::Duration;
 
 use async_trait::async_trait;
@@ -53,13 +52,13 @@ impl From<Target> for WebhookHandler {
 #[async_trait]
 impl SensorHandler for WebhookHandler {
     #[instrument]
-    async fn handle_reading(&self, reading: Arc<SensorMessage>) -> Result<(), String> {
+    async fn handle_reading(&self, reading: &SensorMessage) -> Result<(), String> {
         tracing::info!("Sending reading data to {}", &self.config.url);
         let response = self
             .client
             .post(&self.config.url)
             .timeout(Duration::from_secs(self.config.timeout as u64))
-            .json(reading.as_ref())
+            .json(reading)
             .send()
             .await;
 

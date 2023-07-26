@@ -819,6 +819,7 @@ dependencies = [
  "clap_mangen",
  "janus",
  "janus-common",
+ "janus-server",
  "serde",
  "serde_json",
  "serde_yaml",

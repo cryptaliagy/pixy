@@ -19,7 +19,7 @@ pub mod logging;
 
 use janus::{Gateway, SensorGateway, SensorMessage};
 use janus_common::parse_configs;
-use std::sync::Arc;
+use janus_server::{config::ServerConfiguration, run_server_with};
 use tracing::debug;
 
 pub async fn run(cli: cli::Cli) {
@@ -30,6 +30,7 @@ pub async fn run(cli: cli::Cli) {
     let result = match cli.command {
         cli::Commands::Validate(args) => run_validate(args),
         cli::Commands::Emit(args) => run_emit(args).await,
+        cli::Commands::Server(args) => run_server(args).await,
     };
 
     if let Err(e) = result {
@@ -38,9 +39,7 @@ pub async fn run(cli: cli::Cli) {
 }
 
 fn run_validate(args: cli::ValidateArgs) -> Result<(), String> {
-    debug!("Validation args: {:?}", &args);
-
-    let file = args.file.unwrap_or_else(|| "janus.yaml".to_string());
+    let file = args.config;
     parse_configs(&file)?;
 
     println!("Validation succeeded!");
@@ -49,7 +48,7 @@ fn run_validate(args: cli::ValidateArgs) -> Result<(), String> {
 }
 
 async fn run_emit(args: cli::EmitArgs) -> Result<(), String> {
-    let config_file = args.config.unwrap_or_else(|| "janus.yaml".to_string());
+    let config_file = args.config;
 
     let config = parse_configs(&config_file)?;
 
@@ -77,7 +76,20 @@ async fn run_emit(args: cli::EmitArgs) -> Result<(), String> {
     let reading: SensorMessage =
         serde_json::from_str(&data).map_err(|e| format!("Error parsing sensor data: {}", e))?;
 
-    gateway.handle_reading(Arc::new(reading)).await;
+    gateway.handle_reading(reading).await;
+
+    Ok(())
+}
+
+async fn run_server(args: cli::ServerArgs) -> Result<(), String> {
+    let server_configs = ServerConfiguration {
+        config_file: args.config,
+        port: args.port,
+        log_level: String::from(""),
+        enable_echo: args.enable_echo,
+    };
+
+    run_server_with(server_configs).await;
 
     Ok(())
 }

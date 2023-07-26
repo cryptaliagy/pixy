@@ -17,8 +17,8 @@ fn main() -> std::io::Result<()> {
 
     out_dir.pop();
 
-    let pkg_name = std::env::var("CARGO_PKG_NAME").map_err(|_| std::io::ErrorKind::NotFound)?;
     let cmd = cli::Cli::command();
+    let pkg_name = cmd.get_name().to_string();
 
     let man = clap_mangen::Man::new(cmd);
     let mut buffer: Vec<u8> = Default::default();

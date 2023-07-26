@@ -15,6 +15,7 @@ serde_json = "1.0.103"
 serde_yaml = "0.9.25"
 janus-common = { path = "../janus-common", features = ["validation"] }
 janus = { path = "../janus" }
+janus-server = { path = "../janus-server" }
 tokio = { version = "1.29.1", features = ["rt", "net", "rt-multi-thread", "macros"] }
 tracing = { version = "0.1.37", features = ["async-await"] }
 tracing-subscriber = { version = "0.3.17", features = ["serde_json"] }
