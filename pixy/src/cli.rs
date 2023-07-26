@@ -11,7 +11,7 @@
 use clap::{Args, Parser, Subcommand};
 
 #[derive(Parser, Debug)]
-#[command(name = "janus")]
+#[command(name = "pixy")]
 #[command(author, version, about, long_about = None)]
 #[command(propagate_version = true)]
 /// The Janus CLI definition
@@ -21,7 +21,7 @@ pub struct Cli {
     pub(crate) verbose: u8,
 
     /// The config file to use.
-    #[arg(short, long, global = true, default_value = "/etc/janus/janus.yaml")]
+    #[arg(short, long, global = true, default_value = "/etc/pixy/pixy.yaml")]
     pub(crate) config: String,
 
     #[command(subcommand)]

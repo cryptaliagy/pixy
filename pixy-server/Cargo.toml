@@ -1,5 +1,5 @@
 [package]
-name = "janus-server"
+name = "pixy-server"
 version = "0.1.0"
 edition = "2021"
 description = "A web server implementation of the Janus service"
@@ -11,8 +11,7 @@ authors = ["Natalia Maximo <iam@natalia.dev>"]
 axum = "0.6.19"
 tracing = { version = "0.1.37", features = ["async-await"] }
 tracing-subscriber = "0.3.17"
-janus = { path = "../janus" }
-janus-common = { path = "../janus-common", features = ["validation"] }
+pixy-core = { path = "../pixy-core" }
 config = { version = "0.13.3", default-features = false }
 serde = { version = "1.0.175", features = ["derive"] }
 tokio = { version = "1.29.1", features = ["full"] }

@@ -1,4 +1,4 @@
-use janus_server::{config::ServerConfiguration, run_server_with};
+use pixy_server::{config::ServerConfiguration, run_server_with};
 use tracing::Level;
 use tracing_subscriber::fmt;
 

@@ -17,9 +17,9 @@
 pub mod cli;
 pub mod logging;
 
-use janus::{Gateway, SensorGateway, SensorMessage};
-use janus_common::parse_configs;
-use janus_server::{config::ServerConfiguration, run_server_with};
+use pixy_core::validation::parse_configs;
+use pixy_core::{Gateway, SensorGateway, SensorMessage};
+use pixy_server::{config::ServerConfiguration, run_server_with};
 use tracing::debug;
 
 pub async fn run(cli: cli::Cli) {

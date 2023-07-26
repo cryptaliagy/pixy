@@ -796,64 +796,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "af150ab688ff2122fcef229be89cb50dd66af9e01a4ff320cc137eecc9bacc38"
 
 [[package]]
-name = "janus"
-version = "0.1.0"
-dependencies = [
- "async-trait",
- "janus-common",
- "reqwest",
- "reqwest-middleware",
- "reqwest-retry",
- "serde",
- "serde_json",
- "tokio",
- "tracing",
-]
-
-[[package]]
-name = "janus-cli"
-version = "0.1.0"
-dependencies = [
- "chrono",
- "clap",
- "clap_mangen",
- "janus",
- "janus-common",
- "janus-server",
- "serde",
- "serde_json",
- "serde_yaml",
- "tokio",
- "tracing",
- "tracing-subscriber",
-]
-
-[[package]]
-name = "janus-common"
-version = "0.1.0"
-dependencies = [
- "jsonschema",
- "serde",
- "serde_json",
- "serde_yaml",
- "tracing",
-]
-
-[[package]]
-name = "janus-server"
-version = "0.1.0"
-dependencies = [
- "axum",
- "config",
- "janus",
- "janus-common",
- "serde",
- "tokio",
- "tracing",
- "tracing-subscriber",
-]
-
-[[package]]
 name = "js-sys"
 version = "0.3.64"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1279,6 +1221,52 @@ name = "pin-utils"
 version = "0.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8b870d8c151b6f2fb93e84a13146138f05d02ed11c7e7c54f8826aaaf7c9f184"
+
+[[package]]
+name = "pixy"
+version = "0.1.0"
+dependencies = [
+ "chrono",
+ "clap",
+ "clap_mangen",
+ "pixy-core",
+ "pixy-server",
+ "serde",
+ "serde_json",
+ "serde_yaml",
+ "tokio",
+ "tracing",
+ "tracing-subscriber",
+]
+
+[[package]]
+name = "pixy-core"
+version = "0.1.0"
+dependencies = [
+ "async-trait",
+ "jsonschema",
+ "reqwest",
+ "reqwest-middleware",
+ "reqwest-retry",
+ "serde",
+ "serde_json",
+ "serde_yaml",
+ "tokio",
+ "tracing",
+]
+
+[[package]]
+name = "pixy-server"
+version = "0.1.0"
+dependencies = [
+ "axum",
+ "config",
+ "pixy-core",
+ "serde",
+ "tokio",
+ "tracing",
+ "tracing-subscriber",
+]
 
 [[package]]
 name = "pkg-config"

@@ -1,7 +1,7 @@
 use std::{env, process::ExitCode};
 
 fn main() -> ExitCode {
-    let port = env::var("JANUS_PORT").unwrap_or_else(|_| String::from("8000"));
+    let port = env::var("PIXY_PORT").unwrap_or_else(|_| String::from("8000"));
     let endpoint = format!("http://localhost:{}/healthz", port);
 
     minreq::get(endpoint)

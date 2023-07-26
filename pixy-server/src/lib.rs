@@ -10,13 +10,13 @@ use axum::{
 use tracing::{debug, info, instrument};
 
 use crate::config::ServerConfiguration;
-use janus::{Gateway, SensorGateway, SensorMessage};
-use janus_common::parse_configs;
+use pixy_core::validation::parse_configs;
+use pixy_core::{Gateway, SensorGateway, SensorMessage};
 
 pub async fn run_server_with(server_configs: ServerConfiguration) {
-    let janus_configs = parse_configs(&server_configs.config_file).unwrap();
+    let pixy_configs = parse_configs(&server_configs.config_file).unwrap();
 
-    let gateway: Arc<dyn Gateway> = Arc::new(SensorGateway::from(janus_configs));
+    let gateway: Arc<dyn Gateway> = Arc::new(SensorGateway::from(pixy_configs));
 
     let app = axum::Router::new()
         .route("/data", post(handler))

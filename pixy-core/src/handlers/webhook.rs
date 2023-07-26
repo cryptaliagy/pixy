@@ -7,7 +7,7 @@ use reqwest_middleware::{ClientBuilder, ClientWithMiddleware};
 use reqwest_retry::{policies::ExponentialBackoff, RetryTransientMiddleware};
 use tracing::instrument;
 
-use janus_common::{Target, TargetProperties::Webhook, WebhookTargetProperties};
+use crate::config::{Target, TargetProperties::Webhook, WebhookTargetProperties};
 
 #[derive(Debug)]
 pub struct WebhookHandler {

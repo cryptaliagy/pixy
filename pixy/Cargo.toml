@@ -1,8 +1,11 @@
 [package]
-name = "janus-cli"
+name = "pixy"
 authors = ["Natalia Maximo <iam@natalia.dev>"]
 version = "0.1.0"
 edition = "2021"
+license = "MIT"
+repository = "https://github.com/cryptaliagy/pixy"
+readme = "README.md"
 description = "A multi-target sensor output relay built for secure, efficient IoT. Made for use with the Pimoroni Enviro Pico boards."
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
@@ -13,9 +16,8 @@ clap = { version = "4.1.8", default-features = false, features = ["derive", "err
 serde = { version = "1.0.174", features = ["derive"] }
 serde_json = "1.0.103"
 serde_yaml = "0.9.25"
-janus-common = { path = "../janus-common", features = ["validation"] }
-janus = { path = "../janus" }
-janus-server = { path = "../janus-server" }
+pixy-core = { path = "../pixy-core" }
+pixy-server = { path = "../pixy-server" }
 tokio = { version = "1.29.1", features = ["rt", "net", "rt-multi-thread", "macros"] }
 tracing = { version = "0.1.37", features = ["async-await"] }
 tracing-subscriber = { version = "0.3.17", features = ["serde_json"] }
@@ -31,5 +33,14 @@ wrap_help = ["clap/wrap_help"]
 colors = ["clap/color"]
 
 [[bin]]
-name = "janus"
+name = "pixy"
 path = "src/main.rs"
+
+
+[package.metadata.deb]
+name = "pixy"
+license-file = ["../LICENSE", "0"]
+assets = [
+    ["../target/man/pixy.1", "/usr/share/man/man1", "644"],
+    ["target/release/pixy", "/usr/bin", "755"]
+]
