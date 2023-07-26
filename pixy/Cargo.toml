@@ -41,6 +41,9 @@ path = "src/main.rs"
 name = "pixy"
 license-file = ["../LICENSE", "0"]
 assets = [
-    ["../target/man/pixy.1", "/usr/share/man/man1", "644"],
-    ["target/release/pixy", "/usr/bin", "755"]
+    ["target/release/pixy", "/usr/bin/", "755"],
+    ["../target/man/pixy.1", "/usr/share/man/man1/", "644"],
+    ["../target/man/pixy-validate.1", "/usr/share/man/man1/", "644"],
+    ["../target/man/pixy-emit.1", "/usr/share/man/man1/", "644"],
+    ["../target/man/pixy-server.1", "/usr/share/man/man1/", "644"],
 ]

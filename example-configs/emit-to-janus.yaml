@@ -1,4 +1,4 @@
 targets:
-  - name: "Janus server"
+  - name: "Pixy server"
     webhook:
       url: "http://localhost:8080/data"

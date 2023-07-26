@@ -23,8 +23,6 @@ use pixy_server::{config::ServerConfiguration, run_server_with};
 use tracing::debug;
 
 pub async fn run(cli: cli::Cli) {
-    logging::setup_logging(&cli);
-
     debug!("CLI config: {:?}", &cli);
 
     let result = match cli.command {

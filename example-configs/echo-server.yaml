@@ -1,4 +1,4 @@
 targets:
-  - name: "Janus echo server"
+  - name: "Pixy echo server"
     webhook:
       url: "http://localhost:8080/echo"

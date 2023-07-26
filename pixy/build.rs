@@ -17,17 +17,6 @@ fn main() -> std::io::Result<()> {
 
     out_dir.pop();
 
-    let cmd = cli::Cli::command();
-    let pkg_name = cmd.get_name().to_string();
-
-    let man = clap_mangen::Man::new(cmd);
-    let mut buffer: Vec<u8> = Default::default();
-    let res = man.render(&mut buffer);
-
-    if res.is_err() {
-        print!("Error rendering manpage: {:?}", res)
-    }
-
     let target_dir = out_dir.join("target").join("man");
 
     let create_dir_res = std::fs::create_dir(&target_dir);
@@ -47,13 +36,39 @@ fn main() -> std::io::Result<()> {
         }
     }
 
-    let manfile = format!("{}.1", pkg_name);
+    let cmd = cli::Cli::command();
+    let pkg_name = cmd.get_name().to_string();
 
-    let write_res = std::fs::write(target_dir.join(manfile), &buffer);
+    let subcommands = cmd.get_subcommands().cloned();
 
-    if write_res.is_err() {
-        print!("Error writing manpage: {:?}", write_res)
+    let all_commands = std::iter::once(cmd.clone()).chain(subcommands);
+
+    for cmd in all_commands {
+        let cmd_name = cmd.get_name().to_string();
+
+        let cmd_name = if !cmd_name.starts_with(&pkg_name) {
+            format!("{}-{}", &pkg_name, &cmd_name)
+        } else {
+            cmd_name
+        };
+
+        let man = clap_mangen::Man::new(cmd);
+        let mut buffer: Vec<u8> = Default::default();
+        let res = man.render(&mut buffer);
+
+        if res.is_err() {
+            print!("Error rendering manpage: {:?}", res)
+        }
+
+        let manfile = format!("{}.1", cmd_name);
+
+        let write_res = std::fs::write(target_dir.join(manfile), &buffer);
+
+        if write_res.is_err() {
+            print!("Error writing manpage: {:?}", &write_res);
+            return write_res;
+        }
     }
 
-    write_res
+    Ok(())
 }

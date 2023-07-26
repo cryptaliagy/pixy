@@ -5,5 +5,7 @@ use pixy::cli::Cli;
 async fn main() {
     let cli = Cli::parse();
 
+    pixy::logging::setup_logging(&cli);
+
     pixy::run(cli).await;
 }

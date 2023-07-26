@@ -14,14 +14,14 @@ use clap::{Args, Parser, Subcommand};
 #[command(name = "pixy")]
 #[command(author, version, about, long_about = None)]
 #[command(propagate_version = true)]
-/// The Janus CLI definition
+/// The Pixy CLI definition
 pub struct Cli {
     /// Increases logging verbosity, up to max of 3
     #[arg(short, long, action = clap::ArgAction::Count)]
     pub(crate) verbose: u8,
 
     /// The config file to use.
-    #[arg(short, long, global = true, default_value = "/etc/pixy/pixy.yaml")]
+    #[arg(short, long, global = true, default_value = "pixy.yaml")]
     pub(crate) config: String,
 
     #[command(subcommand)]
@@ -35,7 +35,7 @@ pub enum Commands {
     Validate(ValidateArgs),
     /// Emit sensor data to the configured targets, as defined in the config file.
     Emit(EmitArgs),
-    /// Starts a server instance of Janus.
+    /// Starts a server instance of Pixy.
     Server(ServerArgs),
 }
 
@@ -46,7 +46,7 @@ pub struct ValidateArgs {
 }
 
 /// A subcommand to emit sensor data to the configured targets. This emulates
-/// the behavior of the Janus gateway server.
+/// the behavior of the Pixy gateway server.
 #[derive(Args, Debug)]
 pub struct EmitArgs {
     /// The sensor data to emit to the configured targets. If not provided, this
@@ -62,7 +62,7 @@ pub struct EmitArgs {
     pub(crate) config: String,
 }
 
-/// Arguments for starting a server instance of Janus.
+/// Arguments for starting a server instance of Pixy.
 #[derive(Args, Debug)]
 pub struct ServerArgs {
     /// The port to run the server on.
