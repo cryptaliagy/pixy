@@ -3,7 +3,7 @@ name = "janus-cli"
 authors = ["Natalia Maximo <iam@natalia.dev>"]
 version = "0.1.0"
 edition = "2021"
-description = "A template project to bootstrap new CLIs in rust"
+description = "A multi-target sensor output relay built for secure, efficient IoT. Made for use with the Pimoroni Enviro Pico boards."
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
