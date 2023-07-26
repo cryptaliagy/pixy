@@ -69,11 +69,7 @@ pub struct ServerArgs {
     #[arg(short, long, default_value = "8080")]
     pub(crate) port: u16,
 
-    /// Whether to enable the `/echo` endpoint.
-    /// This is useful for testing the server.
-    /// Note that this will cause the server to respond to any request
-    /// with the same data that was sent.
-    /// This is not recommended for production use.
+    /// Whether to enable the `/echo` endpoint. Not recommended for production.
     #[arg(long, default_value_t = false)]
     pub(crate) enable_echo: bool,
 
