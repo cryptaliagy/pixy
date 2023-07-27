@@ -14,4 +14,4 @@ tracing-subscriber = "0.3.17"
 pixy-core = { path = "../pixy-core" }
 config = { version = "0.13.3", default-features = false }
 serde = { version = "1.0.175", features = ["derive"] }
-tokio = { version = "1.29.1", features = ["full"] }
+tokio = { version = "1.29.1", features = ["rt", "rt-multi-thread", "net", "tracing", "macros"], default-features = false }
