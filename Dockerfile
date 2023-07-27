@@ -13,7 +13,6 @@ COPY . ./
 # Use a statically linked target for the prod
 RUN cargo build -p pixy-server --release --target $(arch)-unknown-linux-musl
 
-# We want the health check to be minimal, and performance isn't a big concern for it
 RUN cargo build -p healthcheck --release --target $(arch)-unknown-linux-musl
 
 # Coalesce all the compiled binaries into a final directory for each output

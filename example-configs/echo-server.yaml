@@ -2,3 +2,4 @@ targets:
   - name: "Pixy echo server"
     webhook:
       url: "http://localhost:9147/echo"
+      retries: 5
