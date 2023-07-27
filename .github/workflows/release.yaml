@@ -13,7 +13,6 @@ jobs:
   build-binary:
     strategy:
       fail-fast: true
-      max-parallel: 2
       matrix:
         architecture:
           - target: "x86_64-unknown-linux-musl"
@@ -47,7 +46,7 @@ jobs:
         run: cross build --target ${{ matrix.architecture.target }} --release -p ${{ env.PACKAGE_NAME }}
 
       - name: Build the deb package for the target
-        run: cargo deb --target ${{ matrix.architecture.target }} --no-build -p ${{ env.PACKAGE_NAME }}
+        run: cargo deb --target ${{ matrix.architecture.target }} --no-build --no-strip -p ${{ env.PACKAGE_NAME }}
 
       - name: Rename binary to use correct extension
         run: |
@@ -60,7 +59,7 @@ jobs:
           name: pixy-drop
           path: |
             target/${{ matrix.architecture.target }}/release/${{ env.PACKAGE_NAME }}.${{ matrix.architecture.name }}
-            target/${{ matrix.architecture.target }}/release/${{ env.PACKAGE_NAME }}*.deb
+            target/${{ matrix.architecture.target }}/debian/${{ env.PACKAGE_NAME }}*.deb
 
   release-container:
     needs:
