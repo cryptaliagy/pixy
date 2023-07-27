@@ -44,7 +44,7 @@ jobs:
         run: cross build --target ${{ matrix.architecture.target }} --release -p ${{ env.PACKAGE_NAME }}
 
       - name: Build the deb package for the target
-        run: cargo deb --target ${{ matrix.architecture.target }} --no-build
+        run: cargo deb --target ${{ matrix.architecture.target }} --no-build -p ${{ env.PACKAGE_NAME }}
 
   build-container:
     runs-on: ubuntu-latest
