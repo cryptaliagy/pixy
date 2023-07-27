@@ -1,0 +1,127 @@
+name: release
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+  PACKAGE_NAME: pixy
+  VERSION: 0.1.${{ github.run_number }}
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-binary:
+    strategy:
+      fail-fast: true
+      max-parallel: 2
+      matrix:
+        architecture:
+          - target: "x86_64-unknown-linux-musl"
+            name: "amd64"
+          - target: "aarch64-unknown-linux-musl"
+            name: "arm64"
+          - target: "armv7-unknown-linux-musleabihf"
+            name: "armv7"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install rust tool chain
+        uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: stable
+          components: rustfmt, clippy, audit
+          target: ${{ matrix.architecture.target }}
+
+      - name: Install cargo-deb
+        run: cargo install cargo-deb
+
+      - name: Install cross-rs
+        run: cargo install cross --git https://github.com/cross-rs/cross
+
+      - name: Lint the code
+        run: cargo clippy
+
+      - name: Run the security audit check
+        run: cargo audit
+
+      - name: Set the crate version
+        run: cargo install cargo-edit --bin cargo-set-version && cargo set-version ${{ env.version }}
+
+      - name: Build the binary for the target
+        run: cross build --target ${{ matrix.architecture.target }} --release -p ${{ env.PACKAGE_NAME }}
+
+      - name: Build the deb package for the target
+        run: cargo deb --target ${{ matrix.architecture.target }} --no-build
+
+      - name: Rename binary to use correct extension
+        run: |
+          mv target/${{ matrix.architecture.target }}/release/${{ env.PACKAGE_NAME }} \
+            target/${{ matrix.architecture.target }}/release/${{ env.PACKAGE_NAME }}.${{ matrix.architecture.name }}
+
+      - name: Upload the deb package & binary as an artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: pixy-drop
+          path: |
+            target/${{ matrix.architecture.target }}/release/${{ env.PACKAGE_NAME }}.${{ matrix.architecture.name }}
+            target/${{ matrix.architecture.target }}/release/${{ env.PACKAGE_NAME }}*.deb
+
+  release-container:
+    needs:
+      - build-binary
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Build the container
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./Dockerfile
+          platforms: linux/amd64,linux/arm64,linux/arm/v7
+          push: true
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest,${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.VERSION }}
+
+  release-binary:
+    needs:
+      - build-binary
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
+    steps:
+      - name: Pull artifacts from artifact store
+        uses: actions/download-artifact@v3
+        with:
+          name: pixy-drop
+          path: ./release
+
+      - name: Publish a draft release to GitHub
+        run: |
+          gh release create --draft \
+            -n "Latest version of ${{ env.PACKAGE_NAME }}" \
+            -t "${{ env.PACKAGE_NAME }} v${{ env.VERSION }}" \
+            ${{ env.VERSION }} ./release/*
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+  release-cargo:
+    needs:
+      - release-binary
+      - release-container
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set the crate version
+        run: cargo install cargo-edit --bin cargo-set-version && cargo set-version ${{ env.version }}
+
+      - name: Release the crate
+        run: cargo publish --allow-dirty
+        env:
+          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}

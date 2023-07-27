@@ -1,0 +1,60 @@
+name: pr
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+  PACKAGE_NAME: pixy
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build-binary:
+    strategy:
+      fail-fast: true
+      max-parallel: 2
+      matrix:
+        architecture:
+          - target: "x86_64-unknown-linux-musl"
+            name: "amd64"
+          - target: "aarch64-unknown-linux-musl"
+            name: "arm64"
+          - target: "armv7-unknown-linux-musleabihf"
+            name: "armv7"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install rust tool chain
+        uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: stable
+          components: rustfmt, clippy, audit
+          target: ${{ matrix.architecture.target }}
+
+      - name: Lint the code
+        run: cargo clippy
+
+      - name: Run the security audit check
+        run: cargo audit
+
+      - name: Build the binary for the target
+        run: cross build --target ${{ matrix.architecture.target }} --release -p ${{ env.PACKAGE_NAME }}
+
+  build-container:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Build the container
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./Dockerfile
+          platforms: linux/amd64,linux/arm64,linux/arm/v7
+          push: false
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
