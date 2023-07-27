@@ -28,12 +28,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Install rust tool chain
-        uses: dtolnay/rust-toolchain@master
-        with:
-          toolchain: stable
-          components: rustfmt, clippy, audit
-
       - name: Install cargo-deb
         run: cargo install cargo-deb
 
