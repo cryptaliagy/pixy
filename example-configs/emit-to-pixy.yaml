@@ -1,4 +1,4 @@
 targets:
   - name: "Pixy server"
     webhook:
-      url: "http://localhost:8080/data"
+      url: "http://localhost:9147/data"

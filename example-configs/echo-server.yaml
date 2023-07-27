@@ -1,4 +1,4 @@
 targets:
   - name: "Pixy echo server"
     webhook:
-      url: "http://localhost:8080/echo"
+      url: "http://localhost:9147/echo"

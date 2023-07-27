@@ -66,7 +66,7 @@ pub struct EmitArgs {
 #[derive(Args, Debug)]
 pub struct ServerArgs {
     /// The port to run the server on.
-    #[arg(short, long, default_value = "8080")]
+    #[arg(short, long, default_value = "9147")]
     pub(crate) port: u16,
 
     /// Whether to enable the `/echo` endpoint. Not recommended for production.
