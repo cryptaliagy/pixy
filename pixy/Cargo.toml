@@ -46,4 +46,5 @@ assets = [
     ["../target/man/pixy-validate.1", "/usr/share/man/man1/", "644"],
     ["../target/man/pixy-emit.1", "/usr/share/man/man1/", "644"],
     ["../target/man/pixy-server.1", "/usr/share/man/man1/", "644"],
+    ["../example-configs/echo-server.yaml", "/etc/pixy/pixy.yaml", "644"]
 ]
