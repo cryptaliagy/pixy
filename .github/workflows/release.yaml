@@ -33,7 +33,6 @@ jobs:
         with:
           toolchain: stable
           components: rustfmt, clippy, audit
-          target: ${{ matrix.architecture.target }}
 
       - name: Install cargo-deb
         run: cargo install cargo-deb

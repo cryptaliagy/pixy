@@ -33,7 +33,12 @@ jobs:
         with:
           toolchain: stable
           components: rustfmt, clippy, audit
-          target: ${{ matrix.architecture.target }}
+
+      - name: Install cargo-deb
+        run: cargo install cargo-deb
+
+      - name: Install cross-rs
+        run: cargo install cross --git https://github.com/cross-rs/cross
 
       - name: Lint the code
         run: cargo clippy
@@ -43,6 +48,9 @@ jobs:
 
       - name: Build the binary for the target
         run: cross build --target ${{ matrix.architecture.target }} --release -p ${{ env.PACKAGE_NAME }}
+
+      - name: Build the deb package for the target
+        run: cargo deb --target ${{ matrix.architecture.target }} --no-build
 
   build-container:
     runs-on: ubuntu-latest
