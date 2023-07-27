@@ -3,7 +3,6 @@ FROM rust:1.71.0 as builder
 
 # Install the targets
 RUN rustup target add $(arch)-unknown-linux-musl && \
-	dpkg --add-architecture $(arch) && \
 	apt update && \
 	apt install -y musl-tools:$(arch) musl-dev:$(arch)
 

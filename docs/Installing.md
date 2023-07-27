@@ -39,6 +39,8 @@ Support for this installation method is only provided for the following targets:
 
 ## Installation - Docker (Advanced)
 
+> Only `amd64` platforms are currently supported for Docker. See [this issue](https://github.com/cryptaliagy/pixy/issues/9)
+
 1. Write a configuration file `pixy.yaml` and save it to your current directory. See the [example configs](/example-configs/) directory to get started, or the section on [writing a `pixy.yaml` file](#writing-a-pixyyaml-file)
 1. Pull the Docker container with `docker pull ghcr.io/cryptaliagy/pixy:latest`
 1. Run the Docker container with `docker run -v ./pixy.yaml:/pixy.yaml -p 8080:8080 ghcr.io/cryptaliagy/pixy:latest`
