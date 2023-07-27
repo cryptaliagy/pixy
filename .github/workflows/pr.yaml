@@ -1,4 +1,4 @@
-name: pr
+name: Build
 
 env:
   REGISTRY: ghcr.io
@@ -6,6 +6,9 @@ env:
   PACKAGE_NAME: pixy
 
 on:
+  push:
+    branches:
+      - main
   pull_request:
   workflow_dispatch:
 
