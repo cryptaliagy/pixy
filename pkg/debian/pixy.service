@@ -1,0 +1,17 @@
+[Unit]
+Description=system service for pixy
+After=network.target
+Documentation=man:pixy(1)
+
+[Service]
+ExecStart=/usr/bin/pixy -v -c /etc/pixy/pixy.yaml serve -p 9147
+Type=simple
+Restart=on-failure
+User=pixy
+RestartSec=10
+StartLimitInterval=5m
+StartLimitBurst=5
+WorkingDirectory=/var/lib/pixy
+
+[Install]
+WantedBy=multi-user.target

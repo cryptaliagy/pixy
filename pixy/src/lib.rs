@@ -28,7 +28,7 @@ pub async fn run(cli: cli::Cli) {
     let result = match cli.command {
         cli::Commands::Validate(args) => run_validate(args),
         cli::Commands::Emit(args) => run_emit(args).await,
-        cli::Commands::Server(args) => run_server(args).await,
+        cli::Commands::Serve(args) => run_server(args).await,
     };
 
     if let Err(e) = result {
@@ -79,7 +79,7 @@ async fn run_emit(args: cli::EmitArgs) -> Result<(), String> {
     Ok(())
 }
 
-async fn run_server(args: cli::ServerArgs) -> Result<(), String> {
+async fn run_server(args: cli::ServeArgs) -> Result<(), String> {
     let server_configs = ServerConfiguration {
         config_file: args.config,
         port: args.port,

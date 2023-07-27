@@ -18,7 +18,7 @@ serde_json = "1.0.103"
 serde_yaml = "0.9.25"
 pixy-core = { path = "../pixy-core" }
 pixy-server = { path = "../pixy-server" }
-tokio = { version = "1.29.1", features = ["rt", "net", "rt-multi-thread", "macros"] }
+tokio = { version = "1.29.1", features = ["full"] }
 tracing = { version = "0.1.37", features = ["async-await"] }
 tracing-subscriber = { version = "0.3.17", features = ["serde_json"] }
 
@@ -40,11 +40,14 @@ path = "src/main.rs"
 [package.metadata.deb]
 name = "pixy"
 license-file = ["../LICENSE", "0"]
+depends = "adduser"
 assets = [
     ["target/release/pixy", "/usr/bin/", "755"],
     ["../target/man/pixy.1", "/usr/share/man/man1/", "644"],
     ["../target/man/pixy-validate.1", "/usr/share/man/man1/", "644"],
     ["../target/man/pixy-emit.1", "/usr/share/man/man1/", "644"],
-    ["../target/man/pixy-server.1", "/usr/share/man/man1/", "644"],
-    ["../example-configs/echo-server.yaml", "/etc/pixy/pixy.yaml", "644"]
+    ["../target/man/pixy-serve.1", "/usr/share/man/man1/", "644"],
+    ["../example-configs/echo-server.yaml", "/var/lib/pixy/pixy.yaml.example", "640"]
 ]
+maintainer-scripts = "../pkg/debian/"
+systemd-units = { enable = false }

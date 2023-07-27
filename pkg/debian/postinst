@@ -1,0 +1,46 @@
+#!/bin/sh
+
+# This script was created based off of the example provided in https://github.com/NLnetLabs/krill/blob/main/pkg/debian/postinst,
+# licensed under the MPL 2.0.
+# As such, this script is also licensed under the MPL 2.0 and offers the same such grants as outlined in the license.
+# For more information, please see https://www.mozilla.org/en-US/MPL/2.0/FAQ/.
+# For the license text, please see the LICENSE-MPL file in the root of this repository.
+
+set -e
+
+PIXY_CONF="/etc/pixy/pixy.yaml"
+PIXY_CONF_PERMS=640
+PIXY_HOME="/var/lib/pixy/"
+PIXY_USER="pixy"
+
+create_user() {
+    if id ${PIXY_USER} > /dev/null 2>&1; then return; fi
+    adduser --system --home "${PIXY_HOME}" --group ${PIXY_USER}
+}
+
+
+create_first_time_configuration() {
+    if [ ! -f "${PIXY_CONF}" ]; then
+        # Create the config directory
+        mkdir -p $(dirname ${PIXY_CONF}) 2>/dev/null || true
+        # Create the config file from the example
+        cp /var/lib/pixy/pixy.yaml.example ${PIXY_CONF}
+
+        chown -R ${PIXY_USER}:${PIXY_USER} ${PIXY_HOME}
+
+        # Ensure that the config file has the correct ownership
+        chown -R ${PIXY_USER}:${PIXY_USER} $(dirname ${PIXY_CONF})
+        
+        # Ensure that the config file has the correct permissions
+        chmod ${PIXY_CONF_PERMS} ${PIXY_CONF}
+    fi
+}
+
+case "$1" in
+configure)
+    create_user
+    create_first_time_configuration
+    ;;
+esac
+
+#DEBHELPER#

@@ -36,7 +36,7 @@ pub enum Commands {
     /// Emit sensor data to the configured targets, as defined in the config file.
     Emit(EmitArgs),
     /// Starts a server instance of Pixy.
-    Server(ServerArgs),
+    Serve(ServeArgs),
 }
 
 #[derive(Args, Debug)]
@@ -64,7 +64,7 @@ pub struct EmitArgs {
 
 /// Arguments for starting a server instance of Pixy.
 #[derive(Args, Debug)]
-pub struct ServerArgs {
+pub struct ServeArgs {
     /// The port to run the server on.
     #[arg(short, long, default_value = "9147")]
     pub(crate) port: u16,
