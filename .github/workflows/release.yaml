@@ -19,8 +19,10 @@ jobs:
             name: "amd64"
           - target: "aarch64-unknown-linux-musl"
             name: "arm64"
-          - target: "armv7-unknown-linux-musleabihf"
+          - target: "armv7-unknown-linux-musleabi"
             name: "armv7"
+          - target: "armv7-unknown-linux-musleabihf"
+            name: "armv7hf"
     runs-on: ubuntu-latest
 
     steps:
@@ -93,7 +95,7 @@ jobs:
         with:
           context: .
           file: ./Dockerfile
-          platforms: linux/amd64,linux/arm64,linux/arm/v7
+          platforms: linux/amd64,linux/arm64
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest,${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.VERSION }}
 
