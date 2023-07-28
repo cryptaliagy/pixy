@@ -1,5 +1,8 @@
 # Pixy
 
+[![Build](https://github.com/cryptaliagy/pixy/actions/workflows/build.yaml/badge.svg)](https://github.com/cryptaliagy/pixy/actions/workflows/build.yaml)
+[![Crates.io](https://img.shields.io/crates/v/pixy)](https://crates.io/crates/pixy)
+
 Pixy is a web server designed to be used with IoT devices for secure-by-default sensor data relay. It was originally built for use with the Pimoroni Enviro Pico, so you could say it is a Raspberry Pi **Pi**co pro**xy**.
 
 ## Overview
