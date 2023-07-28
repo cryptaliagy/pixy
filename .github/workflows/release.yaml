@@ -134,7 +134,26 @@ jobs:
       - name: Set the crate version
         run: cargo install cargo-edit --bin cargo-set-version && cargo set-version ${{ env.VERSION }} --workspace
 
-      - name: Release the crate
+      - name: Publish pixy-core
+        run: cargo publish -p pixy-core --allow-dirty
+        env:
+          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
+
+      - name: Set pixy-core version in pixy-server
+        run: cargo add pixy-core@${{ env.VERSION }} -p pixy-server
+
+      - name: Publish pixy-server
+        run: cargo publish -p pixy-server --allow-dirty
+        env:
+          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
+
+      - name: Set pixy-core version in pixy
+        run: cargo add pixy-core@${{ env.VERSION }} -p pixy
+
+      - name: Set pixy-server version in pixy
+        run: cargo add pixy-server@${{ env.VERSION }} -p pixy
+
+      - name: Publish pixy
         run: cargo publish -p pixy --allow-dirty
         env:
           CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
