@@ -3,7 +3,7 @@ use crate::config::ConfigFile;
 use std::fs::File;
 use tracing::debug;
 
-pub const GATEWAY_SCHEMA: &str = include_str!("../../schemas/gateway.schema.json");
+pub const GATEWAY_SCHEMA: &str = include_str!("../schemas/gateway.schema.json");
 
 fn validate_config(config_value: &serde_json::Value) -> Result<(), String> {
     let schema_value: serde_json::Value =

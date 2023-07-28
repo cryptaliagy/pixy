@@ -5,7 +5,7 @@ version = "0.1.0"
 edition = "2021"
 license = "MIT"
 repository = "https://github.com/cryptaliagy/pixy"
-readme = "README.md"
+readme = "../README.md"
 description = "A multi-target sensor output relay built for secure, efficient IoT. Made for use with the Pimoroni Enviro Pico boards."
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html

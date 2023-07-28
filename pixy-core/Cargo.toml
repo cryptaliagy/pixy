@@ -2,6 +2,12 @@
 name = "pixy-core"
 version = "0.1.0"
 edition = "2021"
+authors = ["Natalia Maximo <iam@natalia.dev>"]
+license = "MIT"
+repository = "https://github.com/cryptaliagy/pixy"
+readme = "../README.md"
+description = "A core library for Pixy, implementing the SensorGateway and its Handlers"
+
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
