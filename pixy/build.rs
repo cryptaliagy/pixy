@@ -19,7 +19,7 @@ fn main() -> std::io::Result<()> {
 
     let target_dir = out_dir.join("target").join("man");
 
-    let create_dir_res = std::fs::create_dir(&target_dir);
+    let create_dir_res = std::fs::create_dir_all(&target_dir);
 
     if let Err(create_error) = create_dir_res {
         match create_error.kind() {
