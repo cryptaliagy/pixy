@@ -52,6 +52,14 @@ Webhook type:
 > \*\* This MUST be an http or https url! You need to include the scheme as a part of the URL
 > \*\*\* Retries use an exponential backoff with jitter to prevent Pixy from spamming downstream targets
 
+#### Using Environment Variables in your Config File
+
+Some information might be more sensitive and should not be written into your `pixy.yaml` file, or should otherwise be passed in at runtime. For these cases, it would be best to reference this external information in some way.
+
+Pixy supports this by making available all environment variables that start with the prefix `"PIXY_"` to your config. This uses [jinja-like syntax](https://docs.rs/minijinja/latest/minijinja/syntax/index.html) provided by `minijinja`, exposing only the `env` variable.
+
+An example of using the environment variable in configuration can be found [here](/example-configs/environment-variables.yaml). Note that the `PIXY_` prefix is removed, so setting the `PIXY_RETRIES` environment variable will make it available for the config under `{{ env.RETRIES }}`
+
 ### Setting up the Enviro Pico
 
 Compatible boards:
