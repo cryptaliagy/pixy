@@ -5,7 +5,7 @@ use std::time::Duration;
 use async_trait::async_trait;
 use reqwest_middleware::{ClientBuilder, ClientWithMiddleware};
 use reqwest_retry::{policies::ExponentialBackoff, RetryTransientMiddleware};
-use tracing::instrument;
+use tracing::{debug, error, info, instrument};
 
 use crate::config::{Target, TargetProperties::Webhook, WebhookTargetProperties};
 
@@ -53,7 +53,7 @@ impl From<Target> for WebhookHandler {
 impl SensorHandler for WebhookHandler {
     #[instrument]
     async fn handle_reading(&self, reading: &SensorMessage) -> Result<(), String> {
-        tracing::info!("Sending reading data to {}", &self.config.url);
+        info!(config = ?self.config, "Sending reading data to {}", &self.config.url);
         let response = self
             .client
             .post(&self.config.url)
@@ -62,10 +62,22 @@ impl SensorHandler for WebhookHandler {
             .send()
             .await;
 
-        match response {
-            Ok(_) => Ok(()),
-            Err(e) => Err(e.to_string()),
-        }
+        response
+            .and_then(|r| match r.error_for_status() {
+                Ok(res) => Ok(res),
+                Err(e) => Err(reqwest_middleware::Error::from(e)),
+            })
+            .map(|r| {
+                debug!(response = ?r, "Successfully sent reading data");
+                info!(
+                    response_status = r.status().as_u16(),
+                    target_url = %self.config.url,
+                );
+            })
+            .map_err(|e| {
+                error!(error = ?e, "Failed to send reading data");
+                e.to_string()
+            })
     }
 
     fn get_name(&self) -> &str {

@@ -1,0 +1,6 @@
+targets:
+  - name: "Pixy echo server"
+    webhook:
+      url: "http://localhost:9147/echo"
+      retries: {{ env.RETRIES }}
+      timeout: 1

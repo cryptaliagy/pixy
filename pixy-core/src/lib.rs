@@ -110,8 +110,8 @@ impl Gateway for SensorGateway {
         debug!("Handling reading: {:?}", &reading);
 
         for handler in &self.handlers {
-            let _ = handler.handle_reading(&reading).await.map_err(|e| {
-                tracing::error!("Error handling reading: {}", e);
+            let _ = handler.handle_reading(&reading).await.map_err(|_| {
+                tracing::error!(?handler, "Handler produced error");
             });
         }
     }
