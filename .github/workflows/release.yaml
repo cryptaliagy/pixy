@@ -48,6 +48,9 @@ jobs:
       - name: Set the crate version
         run: cargo install cargo-edit --bin cargo-set-version && cargo set-version ${{ env.VERSION }} --workspace
 
+      - name: Run the tests
+        run: cross test --target ${{ matrix.architecture.target }} --release
+
       - name: Build the binary for the target
         run: cross build --target ${{ matrix.architecture.target }} --release -p ${{ env.PACKAGE_NAME }}
 
