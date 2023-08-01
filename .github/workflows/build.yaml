@@ -20,6 +20,9 @@ jobs:
   build-cargo-deb:
     runs-on: ubuntu-latest
     steps:
+      - name: Install the x86_64 musl toolchain
+        run: apt-get update && apt-get install -y musl-tools && rustup target add x86_64-unknown-linux-musl
+
       - name: Install cargo-deb
         run: cargo install cargo-deb --target x86_64-unknown-linux-musl
 
@@ -90,6 +93,7 @@ jobs:
   build-deb:
     needs:
       - build-binary
+      - build-cargo-deb
     strategy:
       fail-fast: true
       matrix:
