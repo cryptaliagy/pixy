@@ -17,6 +17,43 @@ on:
   workflow_dispatch:
 
 jobs:
+  build-cargo-deb:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install the x86_64 musl toolchain
+        run: sudo apt-get update && sudo apt-get install -y musl-tools && rustup target add x86_64-unknown-linux-musl
+
+      - name: Install cargo-deb
+        run: cargo install cargo-deb --target x86_64-unknown-linux-musl
+
+      - name: Strip debug symbols
+        run: strip `which cargo-deb`
+
+      - name: Move cargo-deb to the current directory
+        run: mv `which cargo-deb` .
+
+      - name: Upload cargo-deb
+        uses: actions/upload-artifact@v3
+        with:
+          name: cargo-deb
+          path: ./cargo-deb
+          retention-days: 1
+
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install cargo-audit
+        run: cargo install cargo-audit
+
+      - name: Run the security audit check
+        run: cargo audit
+
+      - name: Lint the code
+        run: cargo clippy
+
   build-binary:
     strategy:
       fail-fast: true
@@ -34,17 +71,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Install cargo-deb
-        run: cargo install cargo-deb
+      - name: Install cargo-binstall
+        run: curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash
 
-      - name: Install cross-rs
-        run: cargo install cross --git https://github.com/cross-rs/cross
-
-      - name: Lint the code
-        run: cargo clippy
-
-      - name: Run the security audit check
-        run: cargo audit
+      - name: Install cross
+        run: cargo binstall -y cross
 
       - name: Run the tests
         run: cross test --target ${{ matrix.architecture.target }} --release
@@ -52,8 +83,51 @@ jobs:
       - name: Build the binary for the target
         run: cross build --target ${{ matrix.architecture.target }} --release -p ${{ env.PACKAGE_NAME }}
 
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: pixy-bin-${{ matrix.architecture.name }}
+          path: |
+            target/${{ matrix.architecture.target }}/release/pixy
+            target/man/pixy*.1
+          retention-days: 1
+
+  build-deb:
+    needs:
+      - build-binary
+      - build-cargo-deb
+    strategy:
+      fail-fast: true
+      matrix:
+        architecture:
+          - target: "x86_64-unknown-linux-musl"
+            name: "amd64"
+          - target: "aarch64-unknown-linux-musl"
+            name: "arm64"
+          - target: "armv7-unknown-linux-musleabihf"
+            name: "armv7"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Pull cargo-deb from artifact store
+        uses: actions/download-artifact@v3
+        with:
+          name: cargo-deb
+          path: .
+
+      - name: Set executable permissions
+        run: chmod +x ./cargo-deb
+
+      - name: Pull the binary from artifact store
+        uses: actions/download-artifact@v3
+        with:
+          name: pixy-bin-${{ matrix.architecture.name }}
+          path: target
+
       - name: Build the deb package for the target
-        run: cargo deb --target ${{ matrix.architecture.target }} --no-build --no-strip -p ${{ env.PACKAGE_NAME }}
+        run: ./cargo-deb --target ${{ matrix.architecture.target }} --no-build --no-strip -p ${{ env.PACKAGE_NAME }}
 
   build-container:
     runs-on: ubuntu-latest
@@ -68,7 +142,7 @@ jobs:
         uses: docker/setup-buildx-action@v2
 
       - name: Build the container
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v4
         with:
           context: .
           file: ./Dockerfile
