@@ -117,6 +117,9 @@ jobs:
           name: cargo-deb
           path: .
 
+      - name: Set executable permissions
+        run: chmod +x ./cargo-deb
+
       - name: Pull the binary from artifact store
         uses: actions/download-artifact@v3
         with:
