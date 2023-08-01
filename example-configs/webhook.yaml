@@ -1,0 +1,61 @@
+targets:
+  # This covers the basic example; an enabled
+  # webhook with no auth, using all the other defaults.
+  # This will retry 3 times on failure, and request timeout
+  # is 10 seconds
+  - name: "Basic webhook to echo server"
+    webhook:
+      url: "http://localhost:9147/echo"
+
+  # This example explicitly sets the retries to 5, and
+  # sets the timeout to 30 seconds instead of 10,
+  # which is useful if we expect this target to be
+  # more flaky than others.
+  - name: "Basic webhook with retries"
+    webhook:
+      url: "http://localhost:9147/echo"
+      retries: 5
+      timeout: 30
+
+  # This example uses basic authentication. The username
+  # is hardcoded, but the password is pulled from an
+  # environment variable at runtime. It is recommended
+  # to use environment variables for sensitive data,
+  # and to not store them in the config file, but this
+  # is not enforced; you can hardcode the password if
+  # you want.
+  - name: "Webhook using basic auth"
+    webhook:
+      url: "http://localhost:9147/echo"
+      auth:
+        username: "pixy"
+        # This value is pulled from the environment variable
+        # `PIXY_PASSWORD`
+        password: "{{ env.PASSWORD }}"
+
+  # This example uses bearer authentication. The token
+  # is pulled from an environment variable at runtime.
+  # It is recommended to use environment variables for
+  # sensitive data, and to not store them in the config
+  # file, but this is not enforced; you can hardcode the
+  # token if you want.
+  - name: "Webhook using bearer auth"
+    webhook:
+      url: "http://localhost:9147/echo"
+      auth:
+        # This value is pulled from the environment variable
+        # `PIXY_TOKEN`
+        token: "{{ env.TOKEN }}"
+
+  # This is a second example of a webhook using bearer auth,
+  # but using a different environment variable for the token.
+  # You can use as many different environment variables as
+  # you want, provided that they use different names and
+  # start with `PIXY_`.
+  - name: "Second webhook using bearer auth and environment variables"
+    webhook:
+      url: "http://localhost:9147/echo"
+      auth:
+        # This value is pulled from the environment variable
+        # `PIXY_OTHER_TOKEN`
+        token: "{{ env.OTHER_TOKEN }}"
