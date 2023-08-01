@@ -14,7 +14,20 @@ on:
   workflow_dispatch:
 
 jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install cargo-audit
+        run: cargo install cargo-audit
+
+      - name: Run the security audit check
+        run: cargo audit
   build-binary:
+    needs:
+      - audit
     strategy:
       fail-fast: true
       matrix:
@@ -33,17 +46,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Install cargo-deb
-        run: cargo install cargo-deb
+      - name: Install cargo-binstall
+        run: curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash
 
-      - name: Install cross-rs
-        run: cargo install cross --git https://github.com/cross-rs/cross
+      - name: Install cross
+        run: cargo binstall cross
 
       - name: Lint the code
-        run: cargo clippy
-
-      - name: Run the security audit check
-        run: cargo audit
+        run: cross clippy --target ${{ matrix.architecture.target }} --release
 
       - name: Set the crate version
         run: cargo install cargo-edit --bin cargo-set-version && cargo set-version ${{ env.VERSION }} --workspace
@@ -53,6 +63,9 @@ jobs:
 
       - name: Build the binary for the target
         run: cross build --target ${{ matrix.architecture.target }} --release -p ${{ env.PACKAGE_NAME }}
+
+      - name: Install cargo-deb
+        run: cargo install cargo-deb
 
       - name: Build the deb package for the target
         run: cargo deb --target ${{ matrix.architecture.target }} --no-build --no-strip -p ${{ env.PACKAGE_NAME }}
