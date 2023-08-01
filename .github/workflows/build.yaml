@@ -46,6 +46,9 @@ jobs:
       - name: Run the security audit check
         run: cargo audit
 
+      - name: Run the tests
+        run: cross test --target ${{ matrix.architecture.target }} --release
+
       - name: Build the binary for the target
         run: cross build --target ${{ matrix.architecture.target }} --release -p ${{ env.PACKAGE_NAME }}
 

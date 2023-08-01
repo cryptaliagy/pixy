@@ -134,3 +134,29 @@ impl Gateway for SensorGateway {
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn deserialize_file(file_name: &str) -> SensorMessage {
+        let file = std::fs::read_to_string(file_name).unwrap();
+
+        serde_json::from_str(&file).unwrap()
+    }
+
+    macro_rules! test_deser {
+        ($($a:ident: $b:expr,)*) => {
+        $(
+            #[test]
+            fn $a() {
+                deserialize_file($b);
+            }
+        )*
+        };
+    }
+
+    test_deser!(
+        sensor_deserialize_works: "../example-configs/test-sensor.json",
+    );
+}

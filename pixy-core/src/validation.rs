@@ -46,3 +46,44 @@ pub fn parse_configs(file_name: &str) -> Result<ConfigFile, String> {
 
     Ok(config_file)
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    macro_rules! test_validation {
+        ($($a:ident: $b:expr,)*) => {
+        mod validate {
+            use super::*;
+            $(
+                #[test]
+                fn $a() {
+                    let file = std::fs::read_to_string($b).unwrap();
+                    let config: serde_json::Value = serde_yaml::from_str(&file).unwrap();
+
+                    let res = validate_config(&config);
+
+                    assert!(res.is_ok());
+                }
+            )*
+        }
+        mod parse {
+            use super::*;
+            $(
+                #[test]
+                fn $a() {
+                    let res = parse_configs($b);
+
+                    assert!(res.is_ok());
+                }
+            )*
+        }
+        };
+    }
+
+    test_validation!(
+        simple: "../example-configs/echo-server.yaml",
+        emit_to_self: "../example-configs/emit-to-pixy.yaml",
+        many_webhooks: "../example-configs/webhook.yaml",
+    );
+}
