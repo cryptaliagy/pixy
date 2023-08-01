@@ -15,42 +15,13 @@ For Docker installations, configuration is done through environment variables:
 | PIXY_CONFIG_FILE | /pixy.yaml | The location of the config file                                      |
 | PIXY_ENABLE_ECHO | false      | Whether or not to enable the `/echo` route.                          |
 
-### Writing a `pixy.yaml` File
-
 The most crucial thing to know before configuring Pixy targets is where the configuration file lives.
 
 - If installed using the `.deb` packages, the Pixy service will read from `/etc/pixy/pixy.yaml`. After changing your configuration, make sure to check it with `pixy validate -c /etc/pixy/pixy.yaml`, and apply your configurations by restarting the service with `sudo systemctl restart pixy.service`
-- If installed using Docker, the Pixy service will look for a `/pixy.yaml` file on the container. You need to mount the file into the container.
+- If installed using Docker, the Pixy service will look for a `/pixy.yaml` file on the container. You will need to mount the file into the container.
 - The Pixy CLI will look for a `pixy.yaml` file at the current directory
 
-Below are tables describing the various types and fields allowed in the config file.
-
-Config file:
-
-| Key     | Type         | Default | Description                                                | Required |
-| ------- | ------------ | ------- | ---------------------------------------------------------- | -------- |
-| targets | list[Target] | n/a     | All the targets that Pixy should export the sensor data to | yes      |
-
-Target type:
-
-| Key       | Type    | Default | Description                            | Required |
-| --------- | ------- | ------- | -------------------------------------- | -------- |
-| name      | string  | n/a     | The name of the upload target          | yes      |
-| enabled   | bool    | true    | Whether or not this target is enabled  | no       |
-| webhook\* | Webhook | n/a     | The configuration for a webhook target | yes      |
-
-> Keys with \* cannot be combined; only one can be specified per target
-
-Webhook type:
-
-| Key           | Type       | Default | Description                                                         | Required |
-| ------------- | ---------- | ------- | ------------------------------------------------------------------- | -------- |
-| url\*\*       | url        | n/a     | The URL to post the sensor data to                                  | yes      |
-| timeout       | int (1-60) | 10      | The number of seconds to wait before timing out a request as failed | no       |
-| retries\*\*\* | int (0-10) | 3       | The number of retries when requests fail                            | no       |
-
-> \*\* This MUST be an http or https url! You need to include the scheme as a part of the URL
-> \*\*\* Retries use an exponential backoff with jitter to prevent Pixy from spamming downstream targets
+Example configuration files showing different ways that a `pixy.yaml` file can be configured are available [here](/example-configs/). For a full breakdown of all the types supported by the configuration, see the [types document](/docs/Types.md).
 
 ### Setting up the Enviro Pico
 

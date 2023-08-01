@@ -68,6 +68,29 @@
           "minimum": 0,
           "maximum": 10,
           "examples": [0, 1, 3, 5, 10]
+        },
+        "auth": {
+          "type": "object",
+          "description": "The authentication to use for the webhook",
+          "properties": {
+            "username": {
+              "type": "string",
+              "description": "The username to use for basic authentication"
+            },
+            "password": {
+              "type": "string",
+              "description": "The password to use for basic authentication"
+            },
+            "token": {
+              "type": "string",
+              "description": "The bearer token to use for bearer authentication"
+            }
+          },
+          "oneOf": [
+            { "required": ["username", "password"] },
+            { "required": ["token"] }
+          ],
+          "additionalProperties": false
         }
       }
     }
