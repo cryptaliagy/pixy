@@ -124,6 +124,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: pixy-bin-${{ matrix.architecture.name }}
+          path: target
 
       - name: Build the deb package for the target
         run: ./cargo-deb --target ${{ matrix.architecture.target }} --no-build --no-strip -p ${{ env.PACKAGE_NAME }}
