@@ -26,8 +26,6 @@ jobs:
       - name: Run the security audit check
         run: cargo audit
   build-binary:
-    needs:
-      - audit
     strategy:
       fail-fast: true
       matrix:
@@ -51,9 +49,6 @@ jobs:
 
       - name: Install cross
         run: cargo binstall -y cross
-
-      - name: Lint the code
-        run: cross clippy --target ${{ matrix.architecture.target }} --release
 
       - name: Set the crate version
         run: cargo install cargo-edit --bin cargo-set-version && cargo set-version ${{ env.VERSION }} --workspace
@@ -89,6 +84,7 @@ jobs:
   release-container:
     needs:
       - build-binary
+      - audit
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -122,6 +118,7 @@ jobs:
   release-binary:
     needs:
       - build-binary
+      - audit
     runs-on: ubuntu-latest
     permissions:
       contents: write

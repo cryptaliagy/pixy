@@ -29,9 +29,10 @@ jobs:
       - name: Run the security audit check
         run: cargo audit
 
+      - name: Lint the code
+        run: cargo clippy
+
   build-binary:
-    needs:
-      - audit
     strategy:
       fail-fast: true
       matrix:
@@ -54,9 +55,6 @@ jobs:
       - name: Install cross
         run: cargo binstall -y cross
 
-      - name: Lint the code
-        run: cross clippy --target ${{ matrix.architecture.target }} --release
-
       - name: Run the tests
         run: cross test --target ${{ matrix.architecture.target }} --release
 
@@ -70,8 +68,6 @@ jobs:
         run: cargo deb --target ${{ matrix.architecture.target }} --no-build --no-strip -p ${{ env.PACKAGE_NAME }}
 
   build-container:
-    needs:
-      - audit
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
