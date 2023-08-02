@@ -25,7 +25,14 @@ For more information, use `man pixy` after install.
 1. Run `sudo chmod 755 /usr/bin/pixy` to set the permissions as executable
 1. Run `pixy --version` to confirm that the executable is installed and discoverable
 
-## Installation - Cargo
+## Installation - Cargo (binstall)
+
+> Supported for pixy >= v0.2.0
+
+1. Run the command `cargo binstall pixy`
+1. Run `pixy --version` to confirm that the executable is installed and discoverable
+
+## Installation - Cargo (install)
 
 Support for this installation method is only provided for the following targets:
 
