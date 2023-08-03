@@ -116,8 +116,10 @@ jobs:
             name: "amd64"
           - target: "aarch64-unknown-linux-musl"
             name: "arm64"
-          - target: "armv7-unknown-linux-musleabihf"
+          - target: "armv7-unknown-linux-musleabi"
             name: "armv7"
+          - target: "armv7-unknown-linux-musleabihf"
+            name: "armv7hf"
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
