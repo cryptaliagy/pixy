@@ -63,13 +63,25 @@ jobs:
             name: "amd64"
           - target: "aarch64-unknown-linux-musl"
             name: "arm64"
-          - target: "armv7-unknown-linux-musleabihf"
+          - target: "armv7-unknown-linux-musleabi"
             name: "armv7"
+          - target: "armv7-unknown-linux-musleabihf"
+            name: "armv7hf"
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+
+      - uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            target/
+          key: ${{ runner.os }}-test-${{ matrix.architecture.target }}-${{ hashFiles('**/Cargo.lock') }}
 
       - name: Install cargo-binstall
         run: curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash
