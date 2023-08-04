@@ -31,3 +31,7 @@ default = ["rustls-tls"]
 
 native-tls = ["reqwest/native-tls"]
 rustls-tls = ["reqwest/rustls-tls"]
+
+[dev-dependencies]
+httpmock = "0.6.8"
+openssl = { version = "0.10", features = ["vendored"] }
