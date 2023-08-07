@@ -29,7 +29,7 @@ Below are tables describing types used for context objects and the `pixy.yaml` c
 | retries\*\* | int (0-10)                  | 3       | The number of retries when requests fail                            | no       |
 | auth        | [WebhookAuth](#webhookauth) | n/a     | Authentication to use with the webhook, if necessary                | no       |
 
-> \* This MUST be an http or https url! You need to include the scheme as a part of the URL
+> \* This MUST be an http or https url! You need to include the scheme as a part of the URL  
 > \*\* Retries use an exponential backoff with jitter to prevent Pixy from spamming downstream targets
 
 #### WebhookAuth
@@ -40,5 +40,5 @@ Below are tables describing types used for context objects and the `pixy.yaml` c
 | password | string\* | n/a     | The password to use for Basic Auth. | yes\*\*  |
 | token    | string\* | n/a     | The token to use for Bearer Auth    | yes\*\*  |
 
-> \* These types support using [context objects](/docs/ContextObjects.md).
+> \* These types support using [context objects](/docs/ContextObjects.md).  
 > \*\* Only one authentication type can be used. If using Basic Auth, set both `username` and `password`. If using Bearer, only set `token`.
