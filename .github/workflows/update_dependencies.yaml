@@ -11,8 +11,13 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          override: true
+
       - name: Install cargo-upgrade
-        run: cargo install cargo-upgrade
+        run: cargo install cargo-edit --bin cargo-upgrade
 
       - name: Upgrade dependencies
         run: cargo upgrade
@@ -32,3 +37,5 @@ jobs:
             --title "chore(deps): update dependencies" \
             --body "This is an automated PR to use cargo-upgrade to update dependencies" \
             --base main
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
