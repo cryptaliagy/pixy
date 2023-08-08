@@ -8,13 +8,13 @@ on:
 jobs:
   update-cargo-deps:
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+
     steps:
       - uses: actions/checkout@v2
 
-      - uses: actions-rs/toolchain@v1
-        with:
-          toolchain: stable
-          override: true
+      - uses: dtolnay/rust-toolchain@stable
 
       - name: Install cargo-upgrade
         run: cargo install cargo-edit --bin cargo-upgrade
@@ -29,7 +29,10 @@ jobs:
           git checkout -b actions/updateDependences/${{ github.run_number }}
           git add Cargo.*
           git commit -m "chore(deps): update dependencies"
+          gh auth setup-git
           git push -u origin actions/updateDependences/${{ github.run_number }}
+        env:
+          GH_TOKEN: ${{ github.token }}
 
       - name: Create pull request
         run: |
@@ -38,4 +41,4 @@ jobs:
             --body "This is an automated PR to use cargo-upgrade to update dependencies" \
             --base main
         env:
-          GITHUB_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ github.token }}
