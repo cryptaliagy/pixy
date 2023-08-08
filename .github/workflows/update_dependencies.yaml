@@ -12,7 +12,7 @@ jobs:
       pull-requests: write
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - uses: dtolnay/rust-toolchain@stable
 
@@ -24,12 +24,11 @@ jobs:
 
       - name: Commit changes
         run: |
-          git config --local user.email ${{ github.actor }}@users.noreply.github.com
-          git config --local user.name ${{ github.actor }}
+          git config user.name github-actions
+          git config user.email github-actions@github.com
           git checkout -b actions/updateDependences/${{ github.run_number }}
           git add Cargo.*
           git commit -m "chore(deps): update dependencies"
-          gh auth setup-git
           git push -u origin actions/updateDependences/${{ github.run_number }}
         env:
           GH_TOKEN: ${{ github.token }}
