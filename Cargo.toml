@@ -1,6 +1,9 @@
 [workspace]
 members = ["pixy-core", "pixy", "pixy-server", "healthcheck"]
 
+[workspace.package]
+version = "0.2.1"
+authors = ["Natalia Maximo <iam@natalia.dev>"]
 
 [profile.release]
 strip = true

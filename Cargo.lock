@@ -918,7 +918,7 @@ checksum = "2c6201b9ff9fd90a5a3bac2e56a830d0caa509576f0e503818ee82c181b3437a"
 
 [[package]]
 name = "healthcheck"
-version = "0.1.0"
+version = "0.2.1"
 dependencies = [
  "httpmock",
  "minreq",
@@ -1744,7 +1744,7 @@ checksum = "8b870d8c151b6f2fb93e84a13146138f05d02ed11c7e7c54f8826aaaf7c9f184"
 
 [[package]]
 name = "pixy"
-version = "0.1.0"
+version = "0.2.1"
 dependencies = [
  "chrono",
  "clap",
@@ -1761,7 +1761,7 @@ dependencies = [
 
 [[package]]
 name = "pixy-core"
-version = "0.1.0"
+version = "0.2.1"
 dependencies = [
  "async-trait",
  "httpmock",
@@ -1780,7 +1780,7 @@ dependencies = [
 
 [[package]]
 name = "pixy-server"
-version = "0.1.0"
+version = "0.2.1"
 dependencies = [
  "async-trait",
  "axum",
