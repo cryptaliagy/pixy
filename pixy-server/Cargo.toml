@@ -1,9 +1,9 @@
 [package]
 name = "pixy-server"
-version = "0.1.0"
+version = { workspace = true }
+authors = { workspace = true }
 edition = "2021"
 description = "A web server implementation of the Pixy service"
-authors = ["Natalia Maximo <iam@natalia.dev>"]
 license = "MIT"
 repository = "https://github.com/cryptaliagy/pixy"
 readme = "../README.md"

@@ -1,8 +1,8 @@
 [package]
 name = "pixy-core"
-version = "0.1.0"
+version = { workspace = true }
+authors = { workspace = true }
 edition = "2021"
-authors = ["Natalia Maximo <iam@natalia.dev>"]
 license = "MIT"
 repository = "https://github.com/cryptaliagy/pixy"
 readme = "../README.md"

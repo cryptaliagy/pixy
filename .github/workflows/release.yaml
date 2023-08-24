@@ -8,7 +8,7 @@ env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
   PACKAGE_NAME: pixy
-  VERSION: "0.2.0"
+  VERSION: "0.2.1"
 
 on:
   workflow_dispatch:
@@ -59,9 +59,6 @@ jobs:
 
       - name: Install cross
         run: cargo binstall -y cross
-
-      - name: Set the crate version
-        run: cargo install cargo-edit --bin cargo-set-version && cargo set-version ${{ env.VERSION }} --workspace
 
       - name: Run the tests
         run: cross test --target ${{ matrix.architecture.target }} --release
@@ -157,9 +154,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-
-      - name: Set the crate version
-        run: cargo install cargo-edit --bin cargo-set-version && cargo set-version ${{ env.VERSION }} --workspace
 
       - name: Publish pixy-core
         run: cargo publish -p pixy-core --allow-dirty
