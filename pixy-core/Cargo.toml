@@ -22,7 +22,7 @@ serde = { version = "1.0.188", features = ["derive"] }
 serde_json = "1.0.106"
 jsonschema = { version = "0.17.1", default-features = false, features = ["resolve-file"] }
 serde_yaml = { version = "0.9.25"}
-minijinja = { version = "1.0.7", default-features = false, features = ["macros"] }
+minijinja = { version = "1.0.8", default-features = false, features = ["macros"] }
 
 
 
