@@ -19,7 +19,7 @@ serde_yaml = "0.9.25"
 pixy-core = { path = "../pixy-core" }
 pixy-server = { path = "../pixy-server" }
 tokio = { version = "1.32.0", features = ["full"] }
-tracing = { version = "0.1.37", features = ["async-await"] }
+tracing = { version = "0.1.39", features = ["async-await"] }
 tracing-subscriber = { version = "0.3.17", features = ["serde_json"] }
 
 [build-dependencies]
