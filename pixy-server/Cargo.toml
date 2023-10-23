@@ -12,7 +12,7 @@ readme = "../README.md"
 
 [dependencies]
 axum = "0.6.20"
-tracing = { version = "0.1.39", features = ["async-await"] }
+tracing = { version = "0.1.40", features = ["async-await"] }
 tracing-subscriber = "0.3.17"
 pixy-core = { path = "../pixy-core" }
 config = { version = "0.13.3", default-features = false }
