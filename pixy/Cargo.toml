@@ -15,7 +15,7 @@ chrono = { version = "0.4.31", default-features = false, features = ["std", "clo
 clap = { version = "4.4.8", default-features = false, features = ["derive", "error-context", "help", "std", "suggestions", "usage"] }
 serde = { version = "1.0.192", features = ["derive"] }
 serde_json = "1.0.108"
-serde_yaml = "0.9.25"
+serde_yaml = "0.9.27"
 pixy-core = { path = "../pixy-core" }
 pixy-server = { path = "../pixy-server" }
 tokio = { version = "1.35.0", features = ["full"] }

@@ -21,7 +21,7 @@ tracing = { version = "0.1.40", features = ["log", "async-await"] }
 serde = { version = "1.0.192", features = ["derive"] }
 serde_json = "1.0.108"
 jsonschema = { version = "0.17.1", default-features = false, features = ["resolve-file"] }
-serde_yaml = { version = "0.9.25"}
+serde_yaml = { version = "0.9.27"}
 minijinja = { version = "1.0.9", default-features = false, features = ["macros"] }
 
 
