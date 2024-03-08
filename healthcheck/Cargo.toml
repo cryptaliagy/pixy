@@ -10,5 +10,5 @@ edition = "2021"
 minreq = "2.11.0"
 
 [dev-dependencies]
-httpmock = "0.6.8"
+httpmock = "0.7.0"
 openssl = { version = "0.10", features = ["vendored"] }
