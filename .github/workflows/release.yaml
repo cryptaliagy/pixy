@@ -8,7 +8,7 @@ env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
   PACKAGE_NAME: pixy
-  VERSION: "0.2.1"
+  VERSION: "0.2.2"
 
 on:
   workflow_dispatch:
