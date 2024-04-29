@@ -51,8 +51,9 @@ pub async fn run_server_with_gateway(
     );
 
     info!("Starting server on {}", &bind_address);
-    axum::Server::bind(&bind_address.as_str().parse().unwrap())
-        .serve(app.into_make_service())
+    let listener = tokio::net::TcpListener::bind(&bind_address).await.unwrap();
+
+    axum::serve(listener, app.into_make_service())
         .await
         .unwrap();
 }
@@ -89,6 +90,7 @@ async fn echo(data: String) -> String {
 mod tests {
     use super::*;
     use async_trait::async_trait;
+    use axum::body::Body;
     use axum::http::{self, Request};
     use tower::ServiceExt;
 
@@ -116,7 +118,7 @@ mod tests {
         let app = create_app(gateway, &default_config());
 
         let res = app
-            .oneshot(Request::get("/healthz").body("".into()).unwrap())
+            .oneshot(Request::get("/healthz").body(Body::empty()).unwrap())
             .await
             .unwrap();
 
@@ -134,13 +136,13 @@ mod tests {
         let app = create_app(gateway, &configs);
 
         let res = app
-            .oneshot(Request::post("/echo").body("hello".into()).unwrap())
+            .oneshot(Request::post("/echo").body("hello".to_string()).unwrap())
             .await
             .unwrap();
 
         assert_eq!(res.status(), http::StatusCode::OK);
 
-        let body = hyper::body::to_bytes(res.into_body()).await.unwrap();
+        let body = axum::body::to_bytes(res.into_body(), 5).await.unwrap();
 
         assert_eq!(&body[..], b"hello");
     }
@@ -152,7 +154,7 @@ mod tests {
         let app = create_app(gateway, &default_config());
 
         let res = app
-            .oneshot(Request::post("/echo").body("hello".into()).unwrap())
+            .oneshot(Request::post("/echo").body("hello".to_string()).unwrap())
             .await
             .unwrap();
 
@@ -172,7 +174,7 @@ mod tests {
             .oneshot(
                 Request::post("/data")
                     .header("Content-Type", "application/json")
-                    .body(serde_json::to_string(&example_sensor).unwrap().into())
+                    .body(serde_json::to_string(&example_sensor).unwrap())
                     .unwrap(),
             )
             .await
@@ -193,7 +195,7 @@ mod tests {
         let res = app
             .oneshot(
                 Request::post("/data")
-                    .body(serde_json::to_string(&example_sensor).unwrap().into())
+                    .body(serde_json::to_string(&example_sensor).unwrap())
                     .unwrap(),
             )
             .await
@@ -218,8 +220,7 @@ mod tests {
                     .body(
                         serde_json::to_string(&example_sensor)
                             .unwrap()
-                            .replace("temperature", "hot")
-                            .into(),
+                            .replace("temperature", "hot"),
                     )
                     .unwrap(),
             )
