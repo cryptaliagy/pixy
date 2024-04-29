@@ -3,7 +3,7 @@ members = ["pixy-core", "pixy", "pixy-server", "healthcheck"]
 resolver = "2"
 
 [workspace.package]
-version = "0.2.1"
+version = "0.2.2"
 authors = ["Natalia Maximo <iam@natalia.dev>"]
 
 [profile.release]
