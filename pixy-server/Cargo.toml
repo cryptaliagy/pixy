@@ -16,7 +16,7 @@ tracing = { version = "0.1.40", features = ["async-await"] }
 tracing-subscriber = "0.3.18"
 pixy-core = { path = "../pixy-core" }
 config = { version = "0.14.0", default-features = false }
-serde = { version = "1.0.199", features = ["derive"] }
+serde = { version = "1.0.202", features = ["derive"] }
 tokio = { version = "1.37.0", features = ["rt", "rt-multi-thread", "net", "tracing", "macros"], default-features = false }
 
 [dev-dependencies]
