@@ -14,7 +14,7 @@ description = "A core library for Pixy, implementing the SensorGateway and its H
 [dependencies]
 async-trait = "0.1.80"
 reqwest = { version = "0.12.4", default-features = false }
-reqwest-middleware = { version = "0.3.0", features = ["json"] }
+reqwest-middleware = { version = "0.3.2", features = ["json"] }
 reqwest-retry = "0.5.0"
 tokio = { version = "1.37.0" }
 tracing = { version = "0.1.40", features = ["log", "async-await"] }
