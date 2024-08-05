@@ -24,7 +24,7 @@ tracing-subscriber = { version = "0.3.18", features = ["serde_json"] }
 
 [build-dependencies]
 clap = { version = "4.5.9", default-features = false, features = ["help", "usage", "derive"] }
-clap_mangen = "0.2.22"
+clap_mangen = "0.2.23"
 
 [features]
 default = ["env", "colors", "wrap_help"]
