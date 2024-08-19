@@ -23,4 +23,4 @@ tokio = { version = "1.38.1", features = ["rt", "rt-multi-thread", "net", "traci
 async-trait = "0.1.81"
 tower = { version = "0.4", features = ["util"] }
 hyper = { version = "1.4", features = ["full"] }
-serde_json = "1.0.121"
+serde_json = "1.0.125"
