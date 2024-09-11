@@ -1,5 +1,5 @@
 # Rust 1.71.0 is latest as of July 24, 2023
-FROM rust:1.71.0 as builder
+FROM rust:1.71.0 AS builder
 
 # Install the targets
 RUN rustup target add $(arch)-unknown-linux-musl && \
@@ -26,13 +26,13 @@ RUN chmod -rw ./bin/* && \
 	chown -R 1000:1000 ./bin
 
 # Can use other distroless containers if desired
-FROM scratch as prod
+FROM scratch AS prod
 
 COPY --from=builder /app/bin/ /
 
-ENV PIXY_LOG_LEVEL info
-ENV PIXY_PORT 8000
-ENV PIXY_CONFIG_FILE pixy.yaml
+ENV PIXY_LOG_LEVEL=info
+ENV PIXY_PORT=8000
+ENV PIXY_CONFIG_FILE=pixy.yaml
 
 USER 1000:1000
 
