@@ -33,7 +33,7 @@ jobs:
         run: mv `which cargo-deb` .
 
       - name: Upload cargo-deb
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: cargo-deb
           path: ./cargo-deb
@@ -43,7 +43,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install cargo-audit
         run: cargo install cargo-audit
@@ -71,9 +71,9 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         with:
           path: |
             ~/.cargo/bin/
@@ -96,7 +96,7 @@ jobs:
         run: cross build --target ${{ matrix.architecture.target }} --release -p ${{ env.PACKAGE_NAME }}
 
       - name: Upload artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: pixy-bin-${{ matrix.architecture.name }}
           path: |
@@ -123,10 +123,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Pull cargo-deb from artifact store
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: cargo-deb
           path: .
@@ -135,7 +135,7 @@ jobs:
         run: chmod +x ./cargo-deb
 
       - name: Pull the binary from artifact store
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: pixy-bin-${{ matrix.architecture.name }}
           path: target
@@ -147,16 +147,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
+        uses: docker/setup-qemu-action@v3
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+        uses: docker/setup-buildx-action@v3
 
       - name: Build the container
-        uses: docker/build-push-action@v4
+        uses: docker/build-push-action@v6
         with:
           context: .
           file: ./Dockerfile
