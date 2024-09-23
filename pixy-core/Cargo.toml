@@ -24,7 +24,7 @@ jsonschema = { version = "0.19.1", default-features = false, features = [
     "resolve-file",
 ] }
 serde_yaml = { version = "0.9.34" }
-minijinja = { version = "2.2.0", default-features = false, features = [
+minijinja = { version = "2.3.1", default-features = false, features = [
     "macros",
 ] }
 
